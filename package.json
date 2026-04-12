@@ -1,6 +1,6 @@
 {
   "name": "agent-actions-review",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "CLI and agent skills for diagnosing and fixing GitHub Actions CI/CD failures. Inspired by pbakaus/agent-reviews.",
   "license": "MIT",
   "author": "Peter Souter",
