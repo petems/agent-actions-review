@@ -3,7 +3,7 @@ name: fix-failing-actions
 description: Analyze and fix failing GitHub Actions CI/CD for the current branch. Fetches failures, diagnoses root causes, applies fixes, pushes, and watches until green.
 license: MIT
 compatibility: Requires git, gh (GitHub CLI), and Node.js installed.
-allowed-tools: Bash(npx agent-actions-review *) Bash(pnpm dlx agent-actions-review *) Bash(yarn dlx agent-actions-review *) Bash(bunx agent-actions-review *) Bash(git config *) Bash(git add *) Bash(git commit *) Bash(git push *)
+allowed-tools: Bash(npx agent-actions-review *) Bash(pnpm dlx agent-actions-review *) Bash(yarn dlx agent-actions-review *) Bash(bunx agent-actions-review *) Bash(git config *) Bash(git add *) Bash(git commit *) Bash(git push *) Bash(npm run *) Bash(npx *) Bash(pnpm run *) Bash(yarn run *) Bash(bun run *) Read Edit Write Grep Glob
 metadata:
   author: petems
   version: "0.1.0"
@@ -130,7 +130,7 @@ After the watch command completes, check the output:
   2. Process them using Steps 2-5 (diagnose, fix, commit, push, watch)
   3. Repeat Step 6
 
-- **Maximum 3 fix-push-watch cycles** to prevent infinite loops. If still failing after 3 cycles, report to the user and exit.
+- **Repeat until all checks pass or the user intervenes.** Keep diagnosing, fixing, pushing, and watching as long as new actionable failures appear. Track each cycle's failures by comparing the error message, file path, and line number. If the set of failures is identical across two consecutive cycles, stop and ask the user for guidance rather than retrying the same fix. As a fallback safety net, stop after 10 cycles maximum even if failures are still changing.
 
 ---
 
