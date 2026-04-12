@@ -1,0 +1,41 @@
+{
+  "name": "agent-actions-review",
+  "version": "0.1.0",
+  "description": "CLI and agent skills for diagnosing and fixing GitHub Actions CI/CD failures. Inspired by pbakaus/agent-reviews.",
+  "license": "MIT",
+  "author": "Peter Souter",
+  "bin": {
+    "agent-actions-review": "bin/agent-actions-review.js"
+  },
+  "main": "bin/agent-actions-review.js",
+  "files": [
+    "bin/",
+    "lib/",
+    "skills/",
+    ".claude-plugin/"
+  ],
+  "scripts": {
+    "install-skills": "node scripts/install-skills.js",
+    "prepare": "npm run install-skills",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "github",
+    "github-actions",
+    "ci-cd",
+    "claude-code",
+    "ai-agent",
+    "workflow"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/petems/agent-actions-review"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.1"
+  }
+}
