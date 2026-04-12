@@ -3,7 +3,7 @@ name: watch-actions
 description: Poll GitHub Actions workflow runs for the current branch until all checks pass green or timeout.
 license: MIT
 compatibility: Requires git, gh (GitHub CLI), and Node.js installed.
-allowed-tools: Bash(npx agent-actions-review *) Bash(pnpm dlx agent-actions-review *) Bash(yarn dlx agent-actions-review *) Bash(bunx agent-actions-review *)
+allowed-tools: Bash(npx agent-actions-review *) Bash(pnpm dlx agent-actions-review *) Bash(yarn dlx agent-actions-review *) Bash(bunx agent-actions-review *) Bash(npm run *) Bash(npx *) Bash(pnpm run *) Bash(yarn run *) Bash(bun run *) Read Grep Glob
 metadata:
   author: petems
   version: "0.1.0"
@@ -60,3 +60,9 @@ For failures, suggest next steps:
 - Use `npx agent-actions-review detail <run_id>` to investigate
 - Use the `/fix-failing-actions` skill to automatically fix issues
 - Use `npx agent-actions-review rerun <run_id>` if the failure looks flaky
+
+### Step 4: Re-watch if Runs Still In Progress
+
+If the watch timed out but runs are still in progress (not yet failed or succeeded), go back to Step 2 and restart the watch. Keep polling until all runs reach a terminal state (success or failure). Only exit when every run has completed or the user intervenes.
+
+This ensures the skill stays in a continuous polling loop rather than exiting prematurely when workflows are still running.
