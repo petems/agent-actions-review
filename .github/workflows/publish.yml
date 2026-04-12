@@ -29,7 +29,10 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
-      - run: npm publish --access public
+      - name: Publish with trusted publishing
+        run: |
+          npm config delete //registry.npmjs.org/:_authToken
+          npm publish --access public
 
   github-release:
     needs: publish

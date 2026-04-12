@@ -1,7 +1,7 @@
 {
   "name": "agent-actions-review",
   "description": "Diagnose and fix GitHub Actions CI/CD failures. Automatically analyze failing workflows, fix code issues, re-run flaky tests, and watch until green.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": {
     "name": "Peter Souter"
   },
