@@ -130,7 +130,7 @@ After the watch command completes, check the output:
   2. Process them using Steps 2-5 (diagnose, fix, commit, push, watch)
   3. Repeat Step 6
 
-- **Repeat until all checks pass or the user intervenes.** There is no hard cycle limit. Keep diagnosing, fixing, pushing, and watching as long as new actionable failures appear. If the same failure persists unchanged across two consecutive cycles (identical error, same file, same line), stop and ask the user for guidance rather than retrying the same fix.
+- **Repeat until all checks pass or the user intervenes.** Keep diagnosing, fixing, pushing, and watching as long as new actionable failures appear. Track each cycle's failures by comparing the error message, file path, and line number. If the set of failures is identical across two consecutive cycles, stop and ask the user for guidance rather than retrying the same fix. As a fallback safety net, stop after 10 cycles maximum even if failures are still changing.
 
 ---
 
