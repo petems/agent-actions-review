@@ -1,14 +1,21 @@
 {
+  "name": "agent-actions-review",
+  "owner": {
+    "name": "Peter Souter"
+  },
+  "metadata": {
+    "description": "CLI and Claude Code skills for diagnosing and fixing GitHub Actions CI/CD failures"
+  },
   "plugins": [
     {
       "name": "fix-failing-actions",
-      "description": "Diagnose and fix failing GitHub Actions CI/CD for the current branch. Fetches failures, analyzes logs, applies fixes, pushes, and watches until green.",
-      "source": "."
+      "source": "./",
+      "description": "Diagnose and fix failing GitHub Actions CI/CD for the current branch. Fetches failures, analyzes logs, applies fixes, pushes, and watches until green."
     },
     {
       "name": "watch-actions",
-      "description": "Poll GitHub Actions workflow runs for the current branch until all checks pass green or timeout. Read-only, no code changes.",
-      "source": "."
+      "source": "./",
+      "description": "Poll GitHub Actions workflow runs for the current branch until all checks pass green or timeout. Read-only, no code changes."
     }
   ]
 }
