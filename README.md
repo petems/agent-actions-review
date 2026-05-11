@@ -25,6 +25,29 @@ npx agent-actions-review watch
 
 ## Installation
 
+### As a Claude Code skill (via `npx skills`)
+
+Install an individual skill from this repo using the [`skills` CLI](https://github.com/vercel-labs/skills):
+
+```bash
+# Install just the fix workflow
+npx skills add petems/agent-actions-review@fix-failing-actions
+
+# Install just the read-only watcher
+npx skills add petems/agent-actions-review@watch-actions
+
+# Install both skills at once
+npx skills add petems/agent-actions-review --all
+
+# Install to your user (global) directory instead of the current project
+npx skills add petems/agent-actions-review@fix-failing-actions -g
+
+# Target a specific coding agent (claude-code, codex, cursor, etc.)
+npx skills add petems/agent-actions-review@fix-failing-actions -a claude-code -y
+```
+
+Skills installed this way fetch `npx agent-actions-review` at runtime, so the CLI is pulled automatically. No global npm install needed.
+
 ### As a Claude Code plugin
 
 ```bash
