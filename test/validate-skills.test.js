@@ -11,7 +11,7 @@ const pkg = JSON.parse(
 );
 
 function parseFrontmatter(md) {
-  const match = md.match(/^---\n([\s\S]*?)\n---/);
+  const match = md.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) throw new Error("Missing YAML frontmatter delimited by '---'");
   return yaml.load(match[1]);
 }
