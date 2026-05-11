@@ -6,7 +6,7 @@ compatibility: Requires git, gh (GitHub CLI), and Node.js installed.
 allowed-tools: Bash(npx agent-actions-review *) Bash(pnpm dlx agent-actions-review *) Bash(yarn dlx agent-actions-review *) Bash(bunx agent-actions-review *) Bash(git config *) Bash(git add *) Bash(git commit *) Bash(git push *) Bash(npm run *) Bash(npx *) Bash(pnpm run *) Bash(yarn run *) Bash(bun run *) Read Edit Write Grep Glob
 metadata:
   author: petems
-  version: "0.1.0"
+  version: "0.1.4"
   homepage: https://github.com/petems/agent-actions-review
 ---
 

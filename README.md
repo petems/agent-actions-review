@@ -25,16 +25,55 @@ npx agent-actions-review watch
 
 ## Installation
 
-### As a Claude Code plugin
+### As a Skill (via `npx skills`)
+
+Install an individual skill from this repo using the [`skills` CLI](https://github.com/vercel-labs/skills):
 
 ```bash
-claude install petems/agent-actions-review
+# Install just the fix workflow
+npx skills add petems/agent-actions-review@fix-failing-actions
+
+# Install just the read-only watcher
+npx skills add petems/agent-actions-review@watch-actions
+
+# Install both skills at once
+npx skills add petems/agent-actions-review --all
+
+# Install to your user (global) directory instead of the current project
+npx skills add petems/agent-actions-review@fix-failing-actions -g
+
+# Target a specific coding agent (codex, cursor, etc.)
+npx skills add petems/agent-actions-review@fix-failing-actions -a codex -y
 ```
 
-This adds two slash commands:
+Skills installed this way fetch `npx agent-actions-review` at runtime, so the CLI is pulled automatically. No global npm install needed.
 
-- `/fix-failing-actions` - Full automated workflow: diagnose failures, fix code, push, watch until green
-- `/watch-actions` - Poll until all checks pass (read-only, no code changes)
+### As a Claude Code plugin
+
+Claude Code installs plugins from a marketplace, so first add this repo as a marketplace, then install the plugin(s) you want.
+
+From inside a Claude Code session:
+
+```text
+/plugin marketplace add petems/agent-actions-review
+/plugin install fix-failing-actions@agent-actions-review
+/plugin install watch-actions@agent-actions-review
+```
+
+Or from the terminal:
+
+```bash
+claude plugin marketplace add petems/agent-actions-review
+claude plugin install fix-failing-actions@agent-actions-review
+claude plugin install watch-actions@agent-actions-review
+```
+
+Use `--scope project` on `claude plugin install` to share the install with your team via the repo, or `--scope local` for a gitignored install.
+
+This adds two skills:
+
+- `fix-failing-actions` - Full automated workflow: diagnose failures, fix code, push, watch until green
+- `watch-actions` - Poll until all checks pass (read-only, no code changes)
 
 ### As a CLI tool
 
