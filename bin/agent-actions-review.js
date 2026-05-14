@@ -18,12 +18,7 @@
  *   agent-actions-review --json                    # Output as JSON for scripting
  */
 
-const {
-  getProxyFetch,
-  getGitHubToken,
-  getRepoInfo,
-  getCurrentBranch,
-} = require("../lib/github");
+const { getProxyFetch, getGitHubToken, getRepoInfo, getCurrentBranch } = require("../lib/github");
 
 const {
   listWorkflowRuns,
@@ -40,9 +35,7 @@ const {
 
 const {
   colors,
-  formatRunSummary,
   formatRunDetail,
-  formatJobDetail,
   formatLogExcerpt,
   formatTimestamp,
   formatWatchStatus,
@@ -209,7 +202,9 @@ async function watchCommand(owner, repo, branch, token, options) {
   if (!options.json) {
     console.log(`\n${colors.bright}=== Actions Watch Mode ===${colors.reset}`);
     console.log(`${colors.dim}Branch: ${branch}${colors.reset}`);
-    console.log(`${colors.dim}Polling every ${options.watchInterval}s, exit after ${options.watchTimeout}s of inactivity${colors.reset}`);
+    console.log(
+      `${colors.dim}Polling every ${options.watchInterval}s, exit after ${options.watchTimeout}s of inactivity${colors.reset}`
+    );
     console.log(`${colors.dim}Started at ${formatTimestamp()}${colors.reset}\n`);
   }
 
@@ -222,7 +217,9 @@ async function watchCommand(owner, repo, branch, token, options) {
 
   if (initial.allPassing) {
     if (options.json) {
-      console.log(JSON.stringify({ allPassing: true, summary: initial.summary, runs: initial.runs }, null, 2));
+      console.log(
+        JSON.stringify({ allPassing: true, summary: initial.summary, runs: initial.runs }, null, 2)
+      );
     } else {
       console.log(`\n${colors.green}=== ALL CHECKS PASSING ===${colors.reset}`);
       console.log(`${colors.dim}All ${initial.summary.total} workflow runs passed.${colors.reset}`);
@@ -245,10 +242,14 @@ async function watchCommand(owner, repo, branch, token, options) {
 
     if (result.allPassing) {
       if (options.json) {
-        console.log(JSON.stringify({ allPassing: true, summary: result.summary, runs: result.runs }, null, 2));
+        console.log(
+          JSON.stringify({ allPassing: true, summary: result.summary, runs: result.runs }, null, 2)
+        );
       } else {
         console.log(`\n${colors.green}=== ALL CHECKS PASSING ===${colors.reset}`);
-        console.log(`${colors.dim}All ${result.summary.total} workflow runs passed. Exiting.${colors.reset}`);
+        console.log(
+          `${colors.dim}All ${result.summary.total} workflow runs passed. Exiting.${colors.reset}`
+        );
       }
       return;
     }
@@ -264,11 +265,19 @@ async function watchCommand(owner, repo, branch, token, options) {
     const inactiveSeconds = Math.round((Date.now() - lastChangeTime) / 1000);
     if (inactiveSeconds >= options.watchTimeout) {
       if (options.json) {
-        console.log(JSON.stringify({ allPassing: false, timedOut: true, summary: result.summary, runs: result.runs }, null, 2));
+        console.log(
+          JSON.stringify(
+            { allPassing: false, timedOut: true, summary: result.summary, runs: result.runs },
+            null,
+            2
+          )
+        );
       } else {
         console.log(`\n${colors.yellow}=== WATCH TIMED OUT ===${colors.reset}`);
         console.log(`${colors.dim}No state change after ${options.watchTimeout}s.${colors.reset}`);
-        console.log(`${colors.dim}Final state: ${result.summary.success}/${result.summary.total} passing${colors.reset}`);
+        console.log(
+          `${colors.dim}Final state: ${result.summary.success}/${result.summary.total} passing${colors.reset}`
+        );
       }
       process.exitCode = 1;
       return;
@@ -305,7 +314,9 @@ async function main() {
   // Repo
   const repoInfo = getRepoInfo();
   if (!repoInfo) {
-    console.error(`${colors.red}Error: Could not determine repository from git remote${colors.reset}`);
+    console.error(
+      `${colors.red}Error: Could not determine repository from git remote${colors.reset}`
+    );
     process.exit(1);
   }
   const { owner, repo } = repoInfo;
@@ -315,13 +326,16 @@ async function main() {
   if (!branch) {
     if (options.prNumber) {
       // Fetch PR to get the branch name
-      const res = await proxyFetch(`https://api.github.com/repos/${owner}/${repo}/pulls/${options.prNumber}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/vnd.github+json",
-          "User-Agent": "agent-actions-review",
-        },
-      });
+      const res = await proxyFetch(
+        `https://api.github.com/repos/${owner}/${repo}/pulls/${options.prNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/vnd.github+json",
+            "User-Agent": "agent-actions-review",
+          },
+        }
+      );
       if (!res.ok) {
         console.error(`${colors.red}Error: Could not fetch PR #${options.prNumber}${colors.reset}`);
         process.exit(1);
@@ -341,7 +355,9 @@ async function main() {
   // Command routing
   switch (options.command) {
     case "list": {
-      const runs = await listWorkflowRuns(owner, repo, branch, token, proxyFetch, { status: options.status });
+      const runs = await listWorkflowRuns(owner, repo, branch, token, proxyFetch, {
+        status: options.status,
+      });
       console.log(formatOutput(runs, options));
       break;
     }
@@ -377,7 +393,11 @@ async function main() {
             jobCategoryMap.set(job.id, categorizeFailure(job, step, excerptText));
           } catch {
             jobLogMap.set(job.id, null);
-            jobCategoryMap.set(job.id, { category: "UNKNOWN", confidence: "low", reason: "Could not fetch logs" });
+            jobCategoryMap.set(job.id, {
+              category: "UNKNOWN",
+              confidence: "low",
+              reason: "Could not fetch logs",
+            });
           }
         }
       }
@@ -414,13 +434,19 @@ async function main() {
           for (const { job, step } of failures) {
             const category = jobCategoryMap.get(job.id);
             const logResult = jobLogMap.get(job.id);
-            const catColor = category.category === "FIXABLE" ? colors.cyan
-              : category.category === "FLAKY" ? colors.yellow
-              : category.category === "INFRA" ? colors.magenta
-              : colors.dim;
+            const catColor =
+              category.category === "FIXABLE"
+                ? colors.cyan
+                : category.category === "FLAKY"
+                  ? colors.yellow
+                  : category.category === "INFRA"
+                    ? colors.magenta
+                    : colors.dim;
 
             console.log(`\n  ${colors.red}${job.name} > ${step.name}${colors.reset}`);
-            console.log(`  ${catColor}[${category.category}]${colors.reset} ${category.reason} (${category.confidence} confidence)`);
+            console.log(
+              `  ${catColor}[${category.category}]${colors.reset} ${category.reason} (${category.confidence} confidence)`
+            );
 
             if (logResult) {
               console.log(`  ${colors.dim}Log errors:${colors.reset}`);
@@ -468,7 +494,9 @@ async function main() {
         console.log(JSON.stringify(result, null, 2));
       } else {
         const type = options.rerunAll ? "entire workflow" : "failed jobs";
-        console.log(`${colors.green}Re-run triggered for ${type} in run ${options.runId}${colors.reset}`);
+        console.log(
+          `${colors.green}Re-run triggered for ${type} in run ${options.runId}${colors.reset}`
+        );
       }
       break;
     }

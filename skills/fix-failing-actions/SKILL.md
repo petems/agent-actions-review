@@ -40,6 +40,7 @@ For each failing run, get the detailed breakdown:
 Run `npx agent-actions-review detail <run_id> --json`
 
 This returns:
+
 - The run metadata (workflow name, branch, SHA)
 - All jobs and their steps
 - Failing steps identified
@@ -62,22 +63,26 @@ Use the automatic `category` field as a starting point, then read the log errors
 4. **UNKNOWN** - Cannot determine, ask the user
 
 **Likely FIXABLE:**
+
 - Test failures: assertion errors, failing test suites
 - Lint errors: ESLint, Prettier, style violations
 - Build errors: TypeScript errors, compilation failures, missing imports
 - Dependency errors: lockfile out of sync, missing packages
 
 **Likely FLAKY:**
+
 - Timeouts, network errors, DNS resolution failures
 - Rate limits (429), service unavailable (503)
 - Intermittent connection resets
 
 **Likely INFRA:**
+
 - Out of memory, no disk space, runner provisioning failures
 - Segmentation faults in CI tooling
 - GitHub Actions service issues
 
 **When UNKNOWN, ask the user:**
+
 - The failure relates to business logic or environment-specific config
 - Multiple valid interpretations exist
 - The fix would require architectural changes
@@ -102,6 +107,7 @@ After processing ALL failing runs:
 
 1. Run the project's lint and type-check if applicable
 2. Stage, commit, and push:
+
    ```bash
    git add -A
    git commit -m "fix: resolve CI failures
@@ -109,6 +115,7 @@ After processing ALL failing runs:
    {List of fixes applied, grouped by workflow}"
    git push
    ```
+
 3. Capture the commit hash from the output.
 
 ### Step 5: Watch for Green
@@ -164,16 +171,19 @@ All checks passing. CI is green.
 ## Important Notes
 
 ### Response Policy
+
 - Provide clear rationale for every action taken
 - For re-runs, explain why the failure appears flaky
 - For skipped items, document the reason
 
 ### User Interaction
+
 - Ask the user when uncertain about a failure
 - Don't guess on environment-specific or business logic issues
 - It's better to ask than to make a wrong fix
 
 ### Best Practices
+
 - Read log errors carefully before attempting a fix
 - Keep fixes minimal and focused (don't refactor unrelated code)
 - Ensure lint and type-check pass before committing

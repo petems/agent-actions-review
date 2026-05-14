@@ -141,17 +141,17 @@ Watch mode exits with code 0 when all checks pass, or code 1 on timeout.
 
 ## Options
 
-| Flag | Short | Description |
-|------|-------|-------------|
-| `--status <status>` | `-s` | Filter by status: failure, in_progress, success, completed |
-| `--branch <name>` | `-b` | Target a specific branch (auto-detects from git) |
-| `--pr <number>` | `-p` | Find branch from PR number |
-| `--json` | `-j` | Output JSON for scripting/agent consumption |
-| `--all` | | Re-run entire workflow (with rerun command) |
-| `--interval <N>` | `-i` | Watch poll interval in seconds (default: 30) |
-| `--timeout <N>` | | Watch timeout in seconds (default: 600) |
-| `--help` | `-h` | Show help |
-| `--version` | `-v` | Show version |
+| Flag                | Short | Description                                                |
+| ------------------- | ----- | ---------------------------------------------------------- |
+| `--status <status>` | `-s`  | Filter by status: failure, in_progress, success, completed |
+| `--branch <name>`   | `-b`  | Target a specific branch (auto-detects from git)           |
+| `--pr <number>`     | `-p`  | Find branch from PR number                                 |
+| `--json`            | `-j`  | Output JSON for scripting/agent consumption                |
+| `--all`             |       | Re-run entire workflow (with rerun command)                |
+| `--interval <N>`    | `-i`  | Watch poll interval in seconds (default: 30)               |
+| `--timeout <N>`     |       | Watch timeout in seconds (default: 600)                    |
+| `--help`            | `-h`  | Show help                                                  |
+| `--version`         | `-v`  | Show version                                               |
 
 ## Authentication
 
@@ -184,12 +184,12 @@ Read-only skill that polls until all checks pass. No code changes, no commits, n
 
 The `detail` command automatically categorizes failures:
 
-| Category | Description | Action |
-|----------|-------------|--------|
-| **FIXABLE** | Test failures, lint errors, build errors, dependency issues | Fix the code |
-| **FLAKY** | Timeouts, network errors, intermittent failures | Re-run the workflow |
-| **INFRA** | OOM, disk space, runner issues | Report to user |
-| **UNKNOWN** | Cannot determine | Ask the user |
+| Category    | Description                                                 | Action              |
+| ----------- | ----------------------------------------------------------- | ------------------- |
+| **FIXABLE** | Test failures, lint errors, build errors, dependency issues | Fix the code        |
+| **FLAKY**   | Timeouts, network errors, intermittent failures             | Re-run the workflow |
+| **INFRA**   | OOM, disk space, runner issues                              | Report to user      |
+| **UNKNOWN** | Cannot determine                                            | Ask the user        |
 
 ## Development
 
@@ -198,6 +198,15 @@ git clone https://github.com/petems/agent-actions-review
 cd agent-actions-review
 npm install
 npm test
+```
+
+### Lint and format
+
+```bash
+npm run lint          # Run ESLint
+npm run lint:fix      # Run ESLint with auto-fix
+npm run format        # Run Prettier (write)
+npm run format:check  # Run Prettier (check only, used in CI)
 ```
 
 ### Local skill testing

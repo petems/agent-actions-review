@@ -6,9 +6,7 @@ import yaml from "js-yaml";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SKILLS_DIR = path.join(ROOT, "skills");
-const pkg = JSON.parse(
-  fs.readFileSync(path.join(ROOT, "package.json"), "utf8")
-);
+const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf8"));
 
 function parseFrontmatter(md) {
   const match = md.match(/^---\r?\n([\s\S]*?)\r?\n---/);
