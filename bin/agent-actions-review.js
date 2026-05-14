@@ -383,13 +383,6 @@ async function main() {
       }
 
       if (options.json) {
-        const failureEntries = failures.map(({ job, step }) => ({
-          job: { id: job.id, name: job.name },
-          step: { number: step.number, name: step.name },
-          category: jobCategoryMap.get(job.id) || null,
-          logErrors: jobLogMap.get(job.id) || null,
-        }));
-
         let output;
         if (options.logsOnly) {
           output = failures.map(({ job, step }) => {
@@ -401,10 +394,16 @@ async function main() {
               tail: logResult ? logResult.tail : [],
             };
           });
-        } else if (options.failuresOnly) {
-          output = { run, failures: failureEntries };
         } else {
-          output = { run, jobs, failures: failureEntries };
+          const failureEntries = failures.map(({ job, step }) => ({
+            job: { id: job.id, name: job.name },
+            step: { number: step.number, name: step.name },
+            category: jobCategoryMap.get(job.id) || null,
+            logErrors: jobLogMap.get(job.id) || null,
+          }));
+          output = options.failuresOnly
+            ? { run, failures: failureEntries }
+            : { run, jobs, failures: failureEntries };
         }
         console.log(JSON.stringify(output, null, 2));
       } else {
