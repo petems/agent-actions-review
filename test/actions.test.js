@@ -342,20 +342,12 @@ describe("categorizeFailure", () => {
   });
 
   it("categorizes disk space as INFRA", () => {
-    const result = categorizeFailure(
-      mockJob,
-      mockStep,
-      "Error: ENOSPC: no space left on device"
-    );
+    const result = categorizeFailure(mockJob, mockStep, "Error: ENOSPC: no space left on device");
     expect(result.category).toBe("INFRA");
   });
 
   it("returns UNKNOWN for unrecognized failures", () => {
-    const result = categorizeFailure(
-      mockJob,
-      mockStep,
-      "Something unexpected happened"
-    );
+    const result = categorizeFailure(mockJob, mockStep, "Something unexpected happened");
     expect(result.category).toBe("UNKNOWN");
     expect(result.confidence).toBe("low");
   });

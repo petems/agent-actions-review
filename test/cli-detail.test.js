@@ -68,11 +68,7 @@ describe("detail --logs-only", () => {
 
 describe("detail flag precedence", () => {
   it("--logs-only takes precedence when both flags are passed", () => {
-    const { stdout, status } = runDetail([
-      "--json",
-      "--failures-only",
-      "--logs-only",
-    ]);
+    const { stdout, status } = runDetail(["--json", "--failures-only", "--logs-only"]);
     expect(status).toBe(0);
     const parsed = JSON.parse(stdout);
     // logs-only shape is a flat array, not an object with run/failures

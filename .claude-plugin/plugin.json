@@ -6,12 +6,5 @@
     "name": "Peter Souter"
   },
   "license": "MIT",
-  "keywords": [
-    "github",
-    "github-actions",
-    "ci-cd",
-    "claude-code",
-    "ai-agent",
-    "workflow"
-  ]
+  "keywords": ["github", "github-actions", "ci-cd", "claude-code", "ai-agent", "workflow"]
 }

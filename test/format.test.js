@@ -1,10 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  truncate,
-  timeAgo,
-  formatRunSummary,
-  formatOutput,
-} from "../lib/format.js";
+import { truncate, timeAgo, formatRunSummary, formatOutput } from "../lib/format.js";
 
 // ---------------------------------------------------------------------------
 // truncate

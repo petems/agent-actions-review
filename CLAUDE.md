@@ -19,17 +19,19 @@ skills/watch-actions/               Skill: poll until green (read-only)
 
 ## Key Commands
 
-| Task | Command |
-|------|---------|
-| Install skills locally | `npm run install-skills` |
-| Test CLI locally | `node bin/agent-actions-review.js` |
-| Run tests | `npm test` |
+| Task                   | Command                                               |
+| ---------------------- | ----------------------------------------------------- |
+| Install skills locally | `npm run install-skills`                              |
+| Test CLI locally       | `node bin/agent-actions-review.js`                    |
+| Run tests              | `npm test`                                            |
+| Lint                   | `npm run lint` (auto-fix: `npm run lint:fix`)         |
+| Format                 | `npm run format` (check only: `npm run format:check`) |
 
 ## Rules
 
 - No em dashes. Use commas, periods, or parentheses instead.
 - Node.js CommonJS throughout (no ESM).
-- Version in three places: package.json, .claude-plugin/plugin.json, skills/*/SKILL.md frontmatter.
+- Version in three places: package.json, .claude-plugin/plugin.json, skills/\*/SKILL.md frontmatter.
 - Skills use `npx agent-actions-review` (no bundled scripts).
 - Keep CLI output minimal. No status messages, only results.
 - Changelog entries brief, one list item per feature/fix.

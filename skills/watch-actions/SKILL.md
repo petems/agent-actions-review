@@ -25,6 +25,7 @@ All commands below use `npx agent-actions-review`. If the project uses a differe
 Run `npx agent-actions-review list --json`
 
 This shows all workflow runs for the current branch. Review the output:
+
 - If all runs have `conclusion: "success"`, report "All checks passing" and exit.
 - If any runs are failing or in progress, continue to Step 2.
 
@@ -33,6 +34,7 @@ This shows all workflow runs for the current branch. Review the output:
 Run `npx agent-actions-review watch --json`
 
 This polls the GitHub Actions API every 30 seconds (configurable with `--interval`) and reports:
+
 - Current status of all workflow runs
 - Whether all checks are passing
 - Whether the watch timed out
@@ -42,13 +44,15 @@ This polls the GitHub Actions API every 30 seconds (configurable with `--interva
 When the watch completes, report the result:
 
 **If all passing:**
-```
+
+```text
 All checks passing. CI is green.
 - X workflow runs completed successfully.
 ```
 
 **If timed out:**
-```
+
+```text
 Watch timed out after Ns.
 Current status: X/Y passing, Z failing, W in progress.
 
@@ -57,6 +61,7 @@ Failing workflows:
 ```
 
 For failures, suggest next steps:
+
 - Use `npx agent-actions-review detail <run_id>` to investigate (add `--failures-only --json` for a compact failure-focused payload)
 - Use the `/fix-failing-actions` skill to automatically fix issues
 - Use `npx agent-actions-review rerun <run_id>` if the failure looks flaky

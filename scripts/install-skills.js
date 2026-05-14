@@ -29,22 +29,10 @@ for (const name of SKILL_DIRS) {
   let content = fs.readFileSync(path.join(SRC, name, "SKILL.md"), "utf8");
 
   // Patch all package runner references to use local CLI binary
-  content = content.replaceAll(
-    "npx agent-actions-review",
-    `node ${LOCAL_CLI}`
-  );
-  content = content.replaceAll(
-    "pnpm dlx agent-actions-review",
-    `node ${LOCAL_CLI}`
-  );
-  content = content.replaceAll(
-    "yarn dlx agent-actions-review",
-    `node ${LOCAL_CLI}`
-  );
-  content = content.replaceAll(
-    "bunx agent-actions-review",
-    `node ${LOCAL_CLI}`
-  );
+  content = content.replaceAll("npx agent-actions-review", `node ${LOCAL_CLI}`);
+  content = content.replaceAll("pnpm dlx agent-actions-review", `node ${LOCAL_CLI}`);
+  content = content.replaceAll("yarn dlx agent-actions-review", `node ${LOCAL_CLI}`);
+  content = content.replaceAll("bunx agent-actions-review", `node ${LOCAL_CLI}`);
 
   // Deduplicate allowed-tools after patching (all runners become the same)
   content = content.replace(
@@ -59,7 +47,5 @@ for (const name of SKILL_DIRS) {
   );
 
   fs.writeFileSync(path.join(skillDest, "SKILL.md"), content);
-  console.log(
-    `Installed ${name} -> .claude/skills/${name}/ (patched for local dev)`
-  );
+  console.log(`Installed ${name} -> .claude/skills/${name}/ (patched for local dev)`);
 }
