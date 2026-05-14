@@ -46,6 +46,8 @@ This returns:
 - Log error excerpts for each failing job
 - Automatic categorization: FIXABLE, FLAKY, INFRA, or UNKNOWN
 
+For tighter output, add `--failures-only` to skip the full jobs list and return only `{ run, failures }` (faster triage), or `--logs-only` to get just a flat `[{ job, step, errors, tail }]` array of log excerpts. Both require `--json`; `--logs-only` takes precedence if both are passed.
+
 ### Step 3: Process Each Failure
 
 For each failure from the detail output:
