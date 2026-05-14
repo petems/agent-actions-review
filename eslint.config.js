@@ -14,7 +14,7 @@ module.exports = [
     ],
   },
   {
-    files: ["bin/**/*.js", "lib/**/*.js", "scripts/**/*.js"],
+    files: ["*.js", "bin/**/*.js", "lib/**/*.js", "scripts/**/*.js"],
     ...js.configs.recommended,
     languageOptions: {
       ecmaVersion: 2024,
@@ -25,7 +25,7 @@ module.exports = [
     },
     rules: {
       ...js.configs.recommended.rules,
-      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
       eqeqeq: ["error", "always"],
       "prefer-const": "error",
     },
@@ -43,7 +43,7 @@ module.exports = [
     },
     rules: {
       ...js.configs.recommended.rules,
-      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     },
   },
   prettierConfig,

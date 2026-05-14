@@ -45,14 +45,14 @@ When the watch completes, report the result:
 
 **If all passing:**
 
-```
+```text
 All checks passing. CI is green.
 - X workflow runs completed successfully.
 ```
 
 **If timed out:**
 
-```
+```text
 Watch timed out after Ns.
 Current status: X/Y passing, Z failing, W in progress.
 
