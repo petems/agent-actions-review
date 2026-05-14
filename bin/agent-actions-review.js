@@ -70,6 +70,8 @@ function parseArgs() {
     watchTimeout: 600,
     help: false,
     version: false,
+    failuresOnly: false,
+    logsOnly: false,
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -113,6 +115,12 @@ function parseArgs() {
       case "--json":
       case "-j":
         result.json = true;
+        break;
+      case "--failures-only":
+        result.failuresOnly = true;
+        break;
+      case "--logs-only":
+        result.logsOnly = true;
         break;
       case "--all":
         result.rerunAll = true;
@@ -159,6 +167,8 @@ ${colors.bright}Options:${colors.reset}
   -b, --branch <name>     Target a specific branch (auto-detects from git)
   -p, --pr <number>       Find branch from PR number
   -j, --json              Output as JSON for scripting/agent consumption
+      --failures-only     With detail+json: output { run, failures } only (no jobs)
+      --logs-only         With detail+json: output flat [{ job, step, errors, tail }] array
       --all               Re-run entire workflow (with rerun command)
   -h, --help              Show this help
   -v, --version           Show version
@@ -373,16 +383,29 @@ async function main() {
       }
 
       if (options.json) {
-        const output = {
-          run,
-          jobs,
-          failures: failures.map(({ job, step }) => ({
-            job: { id: job.id, name: job.name },
-            step: { number: step.number, name: step.name },
-            category: jobCategoryMap.get(job.id) || null,
-            logErrors: jobLogMap.get(job.id) || null,
-          })),
-        };
+        const failureEntries = failures.map(({ job, step }) => ({
+          job: { id: job.id, name: job.name },
+          step: { number: step.number, name: step.name },
+          category: jobCategoryMap.get(job.id) || null,
+          logErrors: jobLogMap.get(job.id) || null,
+        }));
+
+        let output;
+        if (options.logsOnly) {
+          output = failures.map(({ job, step }) => {
+            const logResult = jobLogMap.get(job.id);
+            return {
+              job: job.name,
+              step: step.name,
+              errors: logResult ? logResult.errors : [],
+              tail: logResult ? logResult.tail : [],
+            };
+          });
+        } else if (options.failuresOnly) {
+          output = { run, failures: failureEntries };
+        } else {
+          output = { run, jobs, failures: failureEntries };
+        }
         console.log(JSON.stringify(output, null, 2));
       } else {
         console.log(formatRunDetail(run, jobs));

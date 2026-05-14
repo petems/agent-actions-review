@@ -57,7 +57,7 @@ Failing workflows:
 ```
 
 For failures, suggest next steps:
-- Use `npx agent-actions-review detail <run_id>` to investigate
+- Use `npx agent-actions-review detail <run_id>` to investigate (add `--failures-only --json` for a compact failure-focused payload)
 - Use the `/fix-failing-actions` skill to automatically fix issues
 - Use `npx agent-actions-review rerun <run_id>` if the failure looks flaky
 
