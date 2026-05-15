@@ -33,11 +33,31 @@ This shows all workflow runs for the current branch. Review the output:
 
 Run `npx agent-actions-review watch --json`
 
-This polls the GitHub Actions API every 30 seconds (configurable with `--interval`) and reports:
+This polls the GitHub Actions API every 30 seconds (configurable with `--interval`) and streams progress as NDJSON (one JSON object per line) to stdout. One or more lines will be emitted, ending with a final result line.
 
-- Current status of all workflow runs
-- Whether all checks are passing
-- Whether the watch timed out
+Two message types are emitted:
+
+- `heartbeat`: emitted at poll 0 (after the initial status check) when checks are not already all passing, and after every subsequent poll. If the initial check already shows everything green, no poll-0 heartbeat is emitted: only the terminal `result` line. Each heartbeat contains:
+  - `type: "heartbeat"`
+  - `poll`: the poll count (0 for the initial check, then incrementing each poll)
+  - `timestamp`: ISO-8601 timestamp of when the poll completed
+  - `summary`: current run-state counts (e.g. `{ total, success, failure, pending, other }`)
+- `result`: emitted exactly once at termination. Each result contains:
+  - `type: "result"`
+  - `allPassing`: `true` if every run is green, `false` otherwise
+  - `summary`: final run-state counts
+  - `runs`: array of the underlying workflow runs
+  - `timedOut: true` is present only when the watch exited because of the inactivity timeout
+
+Agents should treat each line independently and look for the line where `type === "result"` to determine the final outcome. Heartbeat lines are informational and can be used to display progress or detect that polling is still alive.
+
+Example: extract the final result with `jq`:
+
+```bash
+npx agent-actions-review watch --json | jq -c 'select(.type == "result")'
+```
+
+If the result line includes `"timedOut": true`, the watch exited because no state change was observed within the timeout window, not because checks completed.
 
 ### Step 3: Report Result
 

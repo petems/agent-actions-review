@@ -218,13 +218,29 @@ async function watchCommand(owner, repo, branch, token, options) {
   if (initial.allPassing) {
     if (options.json) {
       console.log(
-        JSON.stringify({ allPassing: true, summary: initial.summary, runs: initial.runs }, null, 2)
+        JSON.stringify({
+          type: "result",
+          allPassing: true,
+          summary: initial.summary,
+          runs: initial.runs,
+        })
       );
     } else {
       console.log(`\n${colors.green}=== ALL CHECKS PASSING ===${colors.reset}`);
       console.log(`${colors.dim}All ${initial.summary.total} workflow runs passed.${colors.reset}`);
     }
     return;
+  }
+
+  if (options.json) {
+    console.log(
+      JSON.stringify({
+        type: "heartbeat",
+        poll: 0,
+        timestamp: new Date().toISOString(),
+        summary: initial.summary,
+      })
+    );
   }
 
   lastState = JSON.stringify(initial.summary);
@@ -236,14 +252,28 @@ async function watchCommand(owner, repo, branch, token, options) {
 
     const result = await areAllChecksPassing(owner, repo, branch, token, proxyFetch);
 
-    if (!options.json) {
+    if (options.json) {
+      console.log(
+        JSON.stringify({
+          type: "heartbeat",
+          poll: pollCount,
+          timestamp: new Date().toISOString(),
+          summary: result.summary,
+        })
+      );
+    } else {
       console.log(formatWatchStatus(pollCount, result.summary));
     }
 
     if (result.allPassing) {
       if (options.json) {
         console.log(
-          JSON.stringify({ allPassing: true, summary: result.summary, runs: result.runs }, null, 2)
+          JSON.stringify({
+            type: "result",
+            allPassing: true,
+            summary: result.summary,
+            runs: result.runs,
+          })
         );
       } else {
         console.log(`\n${colors.green}=== ALL CHECKS PASSING ===${colors.reset}`);
@@ -266,11 +296,13 @@ async function watchCommand(owner, repo, branch, token, options) {
     if (inactiveSeconds >= options.watchTimeout) {
       if (options.json) {
         console.log(
-          JSON.stringify(
-            { allPassing: false, timedOut: true, summary: result.summary, runs: result.runs },
-            null,
-            2
-          )
+          JSON.stringify({
+            type: "result",
+            allPassing: false,
+            timedOut: true,
+            summary: result.summary,
+            runs: result.runs,
+          })
         );
       } else {
         console.log(`\n${colors.yellow}=== WATCH TIMED OUT ===${colors.reset}`);
