@@ -33,15 +33,15 @@ This shows all workflow runs for the current branch. Review the output:
 
 Run `npx agent-actions-review watch --json`
 
-This polls the GitHub Actions API every 30 seconds (configurable with `--interval`) and streams progress as NDJSON (one JSON object per line) to stdout. Expect multiple lines to be emitted before the final result.
+This polls the GitHub Actions API every 30 seconds (configurable with `--interval`) and streams progress as NDJSON (one JSON object per line) to stdout. One or more lines will be emitted, ending with a final result line.
 
 Two message types are emitted:
 
-- `heartbeat`: emitted at poll 0 (after the initial status check) and after every subsequent poll. Each heartbeat contains:
+- `heartbeat`: emitted at poll 0 (after the initial status check) when checks are not already all passing, and after every subsequent poll. If the initial check already shows everything green, no poll-0 heartbeat is emitted: only the terminal `result` line. Each heartbeat contains:
   - `type: "heartbeat"`
   - `poll`: the poll count (0 for the initial check, then incrementing each poll)
   - `timestamp`: ISO-8601 timestamp of when the poll completed
-  - `summary`: current run-state counts (e.g. `{ total, success, failure, in_progress, ... }`)
+  - `summary`: current run-state counts (e.g. `{ total, success, failure, pending, other }`)
 - `result`: emitted exactly once at termination. Each result contains:
   - `type: "result"`
   - `allPassing`: `true` if every run is green, `false` otherwise
